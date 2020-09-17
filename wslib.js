@@ -14,15 +14,17 @@ const wsConnection = (server) => {
     ws.on("message", async (message) => {
       let parsedMessage = JSON.parse(message);
       parsedMessage.ts = Date.now();
-      Persistence.insertItem(parsedMessage, messagesCollection);
+      await Persistence.insertItem(parsedMessage, messagesCollection);
       sendMessages();
     });
   });
-
-  const sendMessages = async () => {
-    let messages = await Persistence.getAllItems(messagesCollection);
-    clients.forEach((client) => client.send(JSON.stringify(messages)));
-  };
 };
+
+const sendMessages = async () => {
+  let messages = await Persistence.getAllItems(messagesCollection);
+  clients.forEach((client) => client.send(JSON.stringify(messages)));
+};
+
+module.exports.sendMessages = sendMessages;
 
 exports.wsConnection = wsConnection;

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Pertsistence = require("../persistence/persistence");
+const webSocket = require("../wslib");
 
 const messagesCollection = "messages";
 
@@ -27,6 +28,7 @@ router.post("/", async (req, res) => {
   insertedMessage.ts = Date.now();
   await Pertsistence.insertItem(insertedMessage, messagesCollection);
   res.send(insertedMessage);
+  webSocket.sendMessages();
 });
 
 router.put("/", async (req, res) => {
@@ -42,6 +44,7 @@ router.put("/", async (req, res) => {
     return;
   }
   res.send(updatedMessage);
+  webSocket.sendMessages();
 });
 
 router.delete("/:ts", async (req, res) => {
@@ -56,6 +59,7 @@ router.delete("/:ts", async (req, res) => {
     return;
   }
   res.status(200).send(`Message with ts: ${ts} deleted`);
+  webSocket.sendMessages();
 });
 
 module.exports = router;

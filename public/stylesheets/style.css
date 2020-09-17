@@ -4,5 +4,20 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
+}
+
+#messages {
+  margin-bottom: 10px;
+}
+
+.message {
+  border: 2px;
+  border-style: solid;
+  padding: 3px;
+  margin: 1px;
+}
+
+.message > p {
+  margin: 3px;
 }

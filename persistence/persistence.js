@@ -39,7 +39,7 @@ const updateItemByAtribute = async (
   let objectIndex = collection.findIndex(
     (element) => element[atributeName] === value
   );
-  if (!objectIndex) {
+  if (objectIndex == -1) {
     return undefined;
   }
   collection[objectIndex] = updatedItem;
@@ -52,7 +52,7 @@ const deleteItemByAtribute = async (collectionName, atributeName, value) => {
   let objectIndex = collection.findIndex(
     (element) => element[atributeName] === value
   );
-  if (!objectIndex) {
+  if (objectIndex == -1) {
     return undefined;
   }
   collection.splice(objectIndex, 1);

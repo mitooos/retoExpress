@@ -12,7 +12,9 @@ const wsConnection = (server) => {
     sendMessages();
 
     ws.on("message", async (message) => {
-      Persistence.insertItem(message, messagesCollection);
+      let parsedMessage = JSON.parse(message);
+      parsedMessage.ts = Date.now();
+      Persistence.insertItem(parsedMessage, messagesCollection);
       sendMessages();
     });
   });

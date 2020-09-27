@@ -1,15 +1,19 @@
-const Joi = require("joi");
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../lib/sequelize");
 
-const messageSchema = Joi.object({
-  message: Joi.string().min(5).required(),
-  author: Joi.string().pattern(new RegExp("^[a-zA-Z]+ [a-zA-Z]+")).required(),
-  ts: Joi.number().integer(),
+const Message = sequelize.define("Message", {
+  message: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  author: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  ts: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
-const validateMessage = (message) => {
-  let { error } = messageSchema.validate(message);
-  return error ? error.message : undefined;
-};
-
-module.exports.Message = messageSchema;
-module.exports.validateMessage = validateMessage;
+module.exports.Message = Message;

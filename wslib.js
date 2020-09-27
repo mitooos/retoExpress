@@ -1,8 +1,7 @@
 const WebSocket = require("ws");
-const Persistence = require("./persistence/persistence");
+const { Message } = require("./models/message");
 
 const clients = [];
-const messagesCollection = "messages";
 
 const wsConnection = (server) => {
   const wss = new WebSocket.Server({ server });
@@ -14,14 +13,14 @@ const wsConnection = (server) => {
     ws.on("message", async (message) => {
       let parsedMessage = JSON.parse(message);
       parsedMessage.ts = Date.now();
-      await Persistence.insertItem(parsedMessage, messagesCollection);
+      await Message.create(parsedMessage);
       sendMessages();
     });
   });
 };
 
 const sendMessages = async () => {
-  let messages = await Persistence.getAllItems(messagesCollection);
+  let messages = await Message.findAll();
   clients.forEach((client) => client.send(JSON.stringify(messages)));
 };
 
